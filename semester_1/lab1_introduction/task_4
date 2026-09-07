@@ -1,0 +1,30 @@
+#include <iostream>
+#include <Windows.h>
+int main() {
+	SetConsoleCP(65001);
+	SetConsoleOutputCP(65001);
+	std::cout << "Ведите любое шестизначное  число";
+	int n;
+	std::cin >> n;
+	if (n < 100000 || n> 999999) {
+		std::cout << "ЭТо не шестизначное число, учи математику";
+		return(0);
+	}
+	int sum_1, sum_2;
+	int num_1 = n / 100000;
+	int num_2= (n / 10000) % 10;
+	int num_3 =(n / 1000) % 10;
+	int num_4 = (n / 100) % 10;
+	int num_5 = (n / 10) % 10;
+	int num_6 = n % 10;
+	sum_1 = num_1 + num_2 + num_3;
+	sum_2 = num_4 + num_5 + num_6;
+	if (sum_1 == sum_2) {
+		std::cout <<n<< " это СЧАСТЛИВОЕ ЧИСЛО" << std::endl;
+	}
+	else {
+		std::cout << " води другое число, это не счастливое";
+
+	}
+	return(0);
+}
