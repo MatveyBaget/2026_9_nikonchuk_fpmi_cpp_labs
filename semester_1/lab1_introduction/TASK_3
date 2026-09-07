@@ -1,0 +1,25 @@
+#include <iostream>
+#include <Windows.h>
+int main() {
+	SetConsoleCP(65001);
+	SetConsoleOutputCP(65001);
+	std::cout << "ведите любое натуральное четырехзначное  число n:";
+	int n;
+	int num_1, num_2, num_3, num_4;
+	std::cin >> n;
+	if (n < 1000 || n > 9999) {
+		std::cout << "ведите ДРУГОЕ чытырехзначное число";
+		return (0);
+	}
+	num_1 = n / 1000;
+	num_2 = (n / 100) % 10;
+	num_3 = (n / 10) % 10;
+	num_4 = n % 10;
+	if (num_1 == num_4 && num_2 == num_3) {
+		std::cout << "число" << n << " полимер" << std::endl;
+	}
+	else {
+		std::cout << "число" << n << " не полимер" << std::endl;
+	}
+	return (0);
+}
