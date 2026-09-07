@@ -1,0 +1,21 @@
+#include <iostream>
+#include <windows.h>
+int main() {
+	SetConsoleCP(65001);
+	SetConsoleOutputCP(65001);
+	int N;
+	std::cout << "Ведите количество нечестный чисел N:";
+	std::cin >> N;
+	if (N <= 0) {
+		std::cout << "число должно быть натуральным";
+		return (0);
+	}
+	int sum_n = 0;
+	int toi = 1;
+	for (int i = 1; i <= N; ++i) {
+		sum_n += toi;
+		toi += 2;
+		}
+	std::cout << "Сума ничетный чисел: " << sum_n << std::endl;
+	return(0);
+}
