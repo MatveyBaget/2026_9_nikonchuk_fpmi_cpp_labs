@@ -1,0 +1,27 @@
+#include <iostream>
+#include <windows.h>
+
+int main() {
+    SetConsoleCP(65001);
+    SetConsoleOutputCP(65001);
+
+    int a, b, d;
+    std::cout << "Введите начальное значение (a), конечное (b) и шаг (d): ";
+    std::cin >> a >> b >> d;
+
+    if (d <= 0) {
+        std::cout << "Ошибка: шаг d должен быть больше 0." << std::endl;
+        return 1;
+    }
+
+    std::cout << "Члены прогрессии, кратные 3 на отрезке [" << a << "; " << b << "]:" << std::endl;
+
+    for (int current = a; current <= b; current += d) {
+        if (current % 3 == 0) {
+            std::cout << current << " ";
+        }
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
