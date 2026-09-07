@@ -1,0 +1,24 @@
+#include <iostream>
+#include <windows.h>
+
+int main() {
+    SetConsoleCP(65001);
+    SetConsoleOutputCP(65001);
+
+    int n;
+    std::cout << "Введите n: ";
+    std::cin >> n;
+
+    int f0 = 0;
+    int f1 = 1;
+
+    for (int i = 0; i < n; ++i) {
+        std::cout << f0 << " ";
+        int next = f0 + f1;
+        f0 = f1;
+        f1 = next;
+    }
+
+    std::cout << std::endl;
+    return 0;
+}
