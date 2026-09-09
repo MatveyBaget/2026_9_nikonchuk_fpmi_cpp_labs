@@ -1,27 +1,50 @@
 #include <iostream>
-#include <windows.h>
+#include <windows.h> 
 
 int main() {
+   
     SetConsoleCP(65001);
     SetConsoleOutputCP(65001);
 
     int a, b, d;
-    std::cout << "Введите начальное значение (a), конечное (b) и шаг (d): ";
-    std::cin >> a >> b >> d;
 
-    if (d <= 0) {
-        std::cout << "Ошибка: шаг d должен быть больше 0." << std::endl;
-        return 1;
-    }
+    std::cout << "Введите начало отрезка a: ";
+    std::cin >> a;
+    std::cout << "Введите конец отрезка b: ";
+    std::cin >> b;
+    std::cout << "Введите разность d: ";
+    std::cin >> d;
 
-    std::cout << "Члены прогрессии, кратные 3 на отрезке [" << a << "; " << b << "]:" << std::endl;
+    std::cout << "\nРезультат:\n";
 
-    for (int current = a; current <= b; current += d) {
-        if (current % 3 == 0) {
-            std::cout << current << " ";
+    int count = 0; 
+
+    if (d > 0) {
+        for (int current = a; current <= b; current += d) {
+            if (current % 3 == 0) {
+                std::cout << current << " ";
+                count++; 
+            }
         }
     }
-    std::cout << std::endl;
+    else if (d < 0) {
+        for (int current = a; current >= b; current += d) {
+            if (current % 3 == 0) {
+                std::cout << current << " ";
+                count++;
+            }
+        }
+    }
+    else {
+        if (a % 3 == 0) {
+            std::cout << a << " ";
+            count++;
+        }
+    }
+    if (count == 0) {
+        std::cout << "Элементов, удовлетворяющих условию, не найдено.";
+    }
 
+    std::cout << std::endl;
     return 0;
 }
