@@ -20,17 +20,17 @@ int main() {
     int count = 0; 
 
     if (d > 0) {
-        for (int current = a; current <= b; current += d) {
-            if (current % 3 == 0) {
-                std::cout << current << " ";
+        for (int toi = a; toi <= b; toi += d) {
+            if (toi % 3 == 0) {
+                std::cout << toi << " ";
                 count++; 
             }
         }
     }
     else if (d < 0) {
-        for (int current = a; current >= b; current += d) {
-            if (current % 3 == 0) {
-                std::cout << current << " ";
+        for (int toi = a; toi >= b; toi += d) {
+            if (toi % 3 == 0) {
+                std::cout << toi << " ";
                 count++;
             }
         }
