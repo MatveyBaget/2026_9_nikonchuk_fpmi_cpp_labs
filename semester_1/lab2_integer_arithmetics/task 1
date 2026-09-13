@@ -1,0 +1,31 @@
+#include <iostream>
+#include <algorithm>
+int main() {
+	int n;
+	std::cout << "Enter any natural number\n";
+	std::cin >> n;
+	if (n <= 0) {
+		std::cout << "This not natural\n";
+			return(1);
+	}
+	int toi = n; // равно н
+	int min_el = 9; // минимальная цифра
+	while (toi > 0) {
+		int roi = toi % 10; //lust number
+		min_el = std::min(min_el, roi);
+		toi = toi / 10;
+	}
+	int b = n;
+	int result = 0;// the end number
+	int p = 1;
+	while (b > 0) {
+		int roi = b % 10;
+		if (min_el != roi) {
+			result = result + roi * p;
+			p = p * 10;
+		}
+		b = b / 10;
+	}
+	std::cout << "new number:" << result << "\n";
+	return(0);
+}
