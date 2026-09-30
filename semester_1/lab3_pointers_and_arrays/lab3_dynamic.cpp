@@ -4,99 +4,125 @@
 #include <iostream>
 #include <windows.h>
 #include <random>
-//ввод массива в ручную
-void write(int* arr, int size) {
-	std::cout << "ведите " << size << " цифр через пробел" << std::endl;
+#include <cmath>
+#include <cstdlib> 
+
+// Вввод
+void write(double* arr, int size) {
+	std::cout << "Ведите элементы через пробел" << std::endl;
 	for (int i = 0; i < size; ++i) {
-		int n;
+		double n;
 		std::cin >> n;
-		if (!(std::cin)||n<0) {
-			std::cout << "ошибка ввода!!!" << std::endl;
-			std::exit;
+		if (!(std::cin)) {
+			std::cout << "Ошибка ввода" << std::endl;
+			std::exit(1);
+
 		}
 		arr[i] = n;
 	}
 }
-// рандомный вводд
-void random(int* arr, int size) {
-	int maxel, minel;
-	
-	std::cout << "Ведите границы начала и конца[a,b]" << std::endl;
-	std::cin >> minel >> maxel;
-	if (minel > maxel) {
-		std::swap(minel, maxel);
+
+
+// вывод
+void print(double* arr, int size) {
+	for (int i = 0; i < size; ++i) {
+		std::cout << arr[i] << " ";
 	}
-	if (minel < 0) {
-		std::cout << "должно быть натуральным" << std::endl;
-		std::exit;
+}
+
+
+// рандом
+void random(double* arr, int size) {
+	double max, min;
+	std::cout << "Ведите границы [a,b]" << std::endl;
+	std::cin >> min >> max;
+	if (min > max) {
+		std::swap(min, max);
 	}
 	std::mt19937 gen(10000);
-	std::uniform_int_distribution<int> dist(minel, maxel);
+	std::uniform_real_distribution<double>dist(min, max);
 	for (int i = 0; i < size; ++i) {
 		arr[i] = dist(gen);
 	}
 
 }
-// вывод маасив
-void print(int* arr, int size) {
-	for (int i = 0; i < size; ++i) {
-		std::cout << arr[i] << " ";
-	}
-}
-//расчет 
-void toi(int* arr, int size) {
-	int max, min;
+
+
+// преоброзование
+void trans(double* arr, int size) {
+
+	int number=0; //это какая по счетту пременая
+	double toi2 = 99999999999999; //счетчик типо старых значений(сохронялка)
+	double toi1; //счетчик нк типо с ним сравниваем
 	
-	min = arr[9];
-	max = arr[0];
-	for (int i = 0; i < size; ++i) {
-		if (min > arr[i]) {
-			
-			min = arr[i];
-		}
-		if (max < arr[i]) {
+	int count = 0;
 
-			max = arr[i];
 
-		}
-	}
-	int sum = 0;
 	for (int i = 0; i < size; ++i) {
-		sum += arr[i];
+		double sum1 = 0;
+		double sum2 = 0; // вот это мы сравниваем
+		int up = i + 1; // вторая половина
+		int r = 0;
+		while (r < i) {
+			sum1 = sum1 + arr[r];
+			r += 1;
+		}
+		while (up < size) {
+			sum2 = sum2 + arr[up];
+			up += 1;
+		}
+		double toi1 = std::abs(sum1 - sum2);
+		count += 1;
+
+
+		if (toi1 < toi2) {
+			toi2 = toi1;
+			number = count;
+		}
+
 	}
-	// аврифметич
-	double roi = (static_cast<double>(sum) - min - max) / (size - 2);
-	std::cout << "Итоговая оцунка:" << roi << std::endl;
-	}
+
+	std::cout << "перемена по счету " << number << " приблизительно делит  массив на равные по сумме части" << std::endl;
+}
+
 int main() {
 	SetConsoleCP(65001);
 	SetConsoleOutputCP(65001);
-	std::cout << "Ведите количество судей" << std::endl;
-	int size; // количество судей
+
+	int size; // размер маассива
+	std::cout << "ведите количество переменных(больше двух)" << std::endl;
 	std::cin >> size;
-		if (!(std::cin) || size <= 0) {
-			std::cout << "ошибка ввода!!" << std::endl;
-			return 1;
+	if (!(std::cin) || size <= 2) {
+		std::cout << "Ошибка ввода" << std::endl;
+		return 1;
 	}
-		int* arr = new int[size];
-		std::cout << "Как вы хотите вести цифры 1-вручную; 2-рандом. " << std::endl;
-		int choos;
-		std::cin >> choos;
-		if (choos == 1) {
-			write(arr, size);
-		}
-		else if (choos == 2) {
-			random(arr, size);
-		}
-		else {
-			std::cout << "Ошибка ввода" << std::endl;
-			delete[] arr;
-			return 1;
-		}
-		std::cout << "Оценки судей" ;
-		print(arr, size);
-		std::cout << "" << std::endl;
-		toi(arr, size);
+	double* arr = new double[size];
+	std::cout << "как вы хотите заполнить массив:" << std::endl;
+	std::cout << "1-вручную" << std::endl;
+	std::cout << "2-рандом" << std::endl;
+	int choose;
+	std::cin >> choose;
+
+	if (choose == 1) {
+		write(arr, size);
+
+	}
+
+
+	else if (choose == 2) {
+		random(arr, size);
+
+	}
+
+	else {
+		std::cout << "Ошибка ввода" << std::endl;
 		delete[] arr;
-		return 0;
+		return 1;
+	}
+	std::cout << "Элементы массива: ";
+	print(arr, size);
+	std::cout << " " << std::endl;
+	trans(arr, size);
+	delete[] arr;
+	return 0;
 }
