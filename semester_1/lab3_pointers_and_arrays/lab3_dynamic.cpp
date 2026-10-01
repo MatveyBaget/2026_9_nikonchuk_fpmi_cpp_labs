@@ -37,10 +37,15 @@ void random(double* arr, int size) {
 	double max, min;
 	std::cout << "Ведите границы [a,b]" << std::endl;
 	std::cin >> min >> max;
+	if (!(std::cin >> min >> max)) {
+		std::cout << "Ошибка ввода! Введите два числа:" << std::endl;
+		std::exit(1);
+	}
 	if (min > max) {
 		std::swap(min, max);
 	}
-	std::mt19937 gen(10000);
+	
+	std::mt19937 gen(100000);
 	std::uniform_real_distribution<double>dist(min, max);
 	for (int i = 0; i < size; ++i) {
 		arr[i] = dist(gen);
