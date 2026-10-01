@@ -6,6 +6,7 @@
 #include <random>
 #include <cmath>
 #include <cstdlib> 
+#include <cfloat>  // Для дробных чисел DBL_MAX
 
 // Вввод
 void write(double* arr, int size) {
@@ -52,7 +53,7 @@ void random(double* arr, int size) {
 void trans(double* arr, int size) {
 
 	int number=0; //это какая по счетту пременая
-	double toi2 = 99999999999999; //счетчик типо старых значений(сохронялка)
+	double toi2 = DBL_MAX;
 	double toi1; //счетчик нк типо с ним сравниваем
 	
 	int count = 0;
