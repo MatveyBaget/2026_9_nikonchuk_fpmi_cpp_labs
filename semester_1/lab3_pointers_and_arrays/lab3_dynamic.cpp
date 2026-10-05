@@ -1,6 +1,4 @@
 
-// solve task with usage of
-// dymanic arrays
 #include <iostream>
 #include <windows.h>
 #include <random>
@@ -33,22 +31,22 @@ void print(double* arr, int size) {
 
 
 // рандом
-void random(double* arr, int size) {
+void random(double* arr, int size, std::mt19937* gen) {
 	double max, min;
 	std::cout << "Ведите границы [a,b]" << std::endl;
 	std::cin >> min >> max;
-	if (!(std::cin >> min >> max)) {
+	if (!(std::cin )) {
 		std::cout << "Ошибка ввода! Введите два числа:" << std::endl;
 		std::exit(1);
 	}
 	if (min > max) {
 		std::swap(min, max);
 	}
+
 	
-	std::mt19937 gen(100000);
 	std::uniform_real_distribution<double>dist(min, max);
 	for (int i = 0; i < size; ++i) {
-		arr[i] = dist(gen);
+		arr[i] = dist(*gen);
 	}
 
 }
@@ -57,10 +55,10 @@ void random(double* arr, int size) {
 // преоброзование
 void trans(double* arr, int size) {
 
-	int number=0; //это какая по счетту пременая
+	int number = 0; //это какая по счетту пременая
 	double toi2 = DBL_MAX;
 	double toi1; //счетчик нк типо с ним сравниваем
-	
+
 	int count = 0;
 
 
@@ -102,6 +100,8 @@ int main() {
 		std::cout << "Ошибка ввода" << std::endl;
 		return 1;
 	}
+	std::random_device rd;
+	std::mt19937 gen(rd());
 	double* arr = new double[size];
 	std::cout << "как вы хотите заполнить массив:" << std::endl;
 	std::cout << "1-вручную" << std::endl;
@@ -116,7 +116,7 @@ int main() {
 
 
 	else if (choose == 2) {
-		random(arr, size);
+		random(arr, size, &gen);
 
 	}
 
