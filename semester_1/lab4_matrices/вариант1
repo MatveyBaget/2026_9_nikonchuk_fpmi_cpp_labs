@@ -1,0 +1,181 @@
+#include <iostream>
+#include <Windows.h>
+#include <random>
+#include <cstdlib>
+#include <iomanip>
+void translate() {
+	SetConsoleCP(65001);
+	SetConsoleOutputCP(65001);
+
+}
+
+
+int sizematrix() {
+	std::cout << "ведите размер матрицы ";
+	int n;
+	std::cin >> n;
+	if (!(std::cin)) {
+		std::cout << "Ошибка ввода";
+		std::exit(1);
+	}
+	return n;
+}
+
+
+int** creatmatirx(int n) {
+	int** matrix = new int*[n];
+	for (int i = 0; i < n; ++i) {
+		 matrix[i] = new int[n];
+	}
+	return matrix;
+}
+
+void freematrix(int** matrix, int n) {
+	for (int i = 0; i < n; ++i) {
+		delete[] matrix[i];
+	}
+	delete[] matrix;
+}
+
+
+void writematrix(int** matrix, int n) {
+	std::cout << "Введите элементы матрицы (" << n * n << " шт.):" << std::endl;
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < n; ++j) {
+			std::cin >> matrix[i][j];
+			if (!(std::cin)) {
+				std::cout << "Ошиька ввода";
+				freematrix(matrix, n);
+				std::exit(1);
+			}
+	}
+	}
+}
+  
+void random(int** matrix, int n, std::mt19937& gen) {
+	std::cout << "Ведите границы промежутка[a,b]" << std::endl;
+	int a, b;
+	std::cin >> a >> b;
+	if (!(std::cin)) {
+		std::cout << "Ошибка ввода";
+		freematrix(matrix, n);
+		std::exit(1);
+		
+	}
+	if (a > b) {
+		std::swap(a, b);
+	}
+	std::uniform_int_distribution<> dist(a, b);
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < n; ++j) {
+			matrix[i][j] = dist(gen);
+		}
+		
+	}
+}
+
+
+void print(int** matrix, int n, const char* title) {
+	std::cout << "\n---" << title << "---\n";
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < n; ++j) {
+			std::cout << std::setw(5) << matrix[i][j];
+
+		}
+		std::cout << "\n";
+	}
+}
+
+
+void choosMatrix(int** matrix, int n, std::mt19937& gen) {
+	int choice;
+	std::cout << "Выберите способ заполнения матрицы:\n1. Вручную с клавиатуры\n2. Случайными числами\nВаш выбор: ";
+	std::cin >> choice;
+	if (!(std::cin) || choice>2) {
+		std::cout << "Ошибка ввода";
+		freematrix(matrix, n);
+		std::exit(1);
+	}
+	if (choice == 1) {
+		writematrix(matrix, n);
+	}
+	else {
+		random(matrix, n, gen);
+	}
+}
+
+void matrix90(int** matrix, int n) {
+	for (int i = 0; i < n; ++i) {
+		for (int j = i + 1; j < n; ++j) {
+			std::swap(matrix[i][j], matrix[j][i]);
+		}
+	}
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < (n / 2); ++j) {
+			std::swap(matrix[i][j], matrix[i][n - 1 - j]);
+		}
+	}
+}
+ 
+void matrix180(int** matrix, int n) {
+	for (int i = 0; i < n/2; ++i) {
+		for (int j = 0; j < n; ++j) {
+			std::swap(matrix[i][j], matrix[n - 1 - i][j]);
+		}
+	}
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < n / 2; ++j) {
+			std::swap(matrix[i][j], matrix[i][n - 1 - j]);
+		}
+	}
+}
+
+void matrix270(int** matrix, int n) {
+	for (int i = 0; i < n; ++i) {
+		for (int j = i + 1; j < n; ++j) {
+			std::swap(matrix[i][j], matrix[j][i]);
+		}
+	}
+	 
+	for (int i = 0; i < n / 2; ++i) {
+		for (int j = 0; j < n; ++j) {
+			std::swap(matrix[i][j], matrix[n - 1 - i][j]);
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+int main() {
+	std::mt19937 gen(45218965);
+	translate();
+	int n = sizematrix();
+
+	int** matrix = creatmatirx(n);
+
+	choosMatrix( matrix, n, gen);
+
+	print(matrix, n, "изначалная");
+
+	matrix90(matrix, n);
+	print(matrix, n, "поворот на 90");
+	matrix270(matrix, n);
+
+	matrix180(matrix, n);
+	print(matrix, n, "разворот на 180");
+	matrix180(matrix, n);
+
+	matrix270(matrix, n);
+	print(matrix, n, "разворот на 270 градусов");
+	matrix90(matrix, n);
+
+
+	freematrix(matrix, n);
+	return 0;
+}
