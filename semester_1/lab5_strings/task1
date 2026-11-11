@@ -1,0 +1,87 @@
+#include <iostream>
+#include <string>
+#include <windows.h>
+#include <vector>
+#include <algorithm>
+//18.53
+
+void translate() {
+	SetConsoleCP(65001);
+	SetConsoleOutputCP(65001);
+}
+
+bool findprobel(char c) {
+	std::string toi = " ,.'!?;:-";
+	return toi.find(c) != std::string::npos;
+}
+
+std::string reversetext(const std::string& inputtext1) {
+	std::vector<std::string> words;
+	std::string word = "";
+	for (char c : inputtext1) {
+		if (findprobel(c)) {
+			if (!word.empty()) {
+				words.push_back(word);
+				word = "";
+			}
+			
+		
+		}
+		else {
+			word += c;
+		}
+
+	}
+	if (!word.empty()) {
+		words.push_back(word);
+	}
+
+	std::reverse(words.begin(), words.end());
+	std::string newtext = "";
+	int count = 0;
+	bool inwords = false;
+	for (char c : inputtext1) {
+	
+
+	
+		if (findprobel(c)) {
+			newtext += c;
+			inwords = false;
+		}
+		else if (!inwords) {
+			newtext += words[count];
+			count += 1;
+			inwords = true;
+		}
+	}
+	return newtext;
+
+}
+
+
+
+
+
+int main() {
+	translate();
+
+	std::string inputtext1;
+	std::cout << "Ведите строку" << std::endl;
+	std::getline(std::cin, inputtext1);
+
+	std::cout << "Ихначальный" << inputtext1 << std::endl;
+	std::string newtext;
+	newtext = reversetext(inputtext1);
+	std::cout << "НОвый" << newtext;
+
+
+
+
+
+
+
+
+
+
+	return 0;
+}
