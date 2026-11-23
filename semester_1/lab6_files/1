@@ -1,0 +1,118 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <chrono>
+#include <ctime>
+#include <iomanip>
+#include <locale>
+
+std::time_t getNow() {
+    auto now = std::chrono::system_clock::now();
+    return std::chrono::system_clock::to_time_t(now);
+}
+
+auto formatTime(std::time_t time) {
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable: 4996)
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
+    return std::put_time(std::localtime(&time), "%d.%m.%Y %H:%M:%S");
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+}
+
+void writeLog(std::ofstream& logFile, const std::string& msg) {
+    if (logFile.is_open()) {
+        logFile << formatTime(getNow()) << " | " << msg << "\n";
+    }
+}
+
+bool isDelimiter(char c) {
+    return c == ' ' || c == ',' || c == '.' || c == '!' || c == '?' ||
+        c == ';' || c == ':' || c == '-' || c == '\t';
+}
+
+std::string reverseWords(const std::string& line) {
+    std::vector<std::string> parts;
+    std::vector<bool> isWord;
+    std::vector<std::string> words;
+
+    size_t i = 0;
+    while (i < line.size()) {
+        bool delim = isDelimiter(line[i]);
+        std::string part;
+        while (i < line.size() && isDelimiter(line[i]) == delim) {
+            part += line[i];
+            i++;
+        }
+        parts.push_back(part);
+        isWord.push_back(!delim);
+        if (!delim) {
+            words.push_back(part);
+        }
+    }
+
+    std::string res;
+    int wordIdx = static_cast<int>(words.size()) - 1;
+    for (size_t j = 0; j < parts.size(); j++) {
+        if (isWord[j]) {
+            res += words[wordIdx--];
+        }
+        else {
+            res += parts[j];
+        }
+    }
+
+    return res;
+}
+
+int main() {
+    std::ofstream logFile("log.txt");
+    try {
+        logFile.imbue(std::locale("ru_RU.UTF-8"));
+    }
+    catch (...) {}
+
+    writeLog(logFile, "opening file \"input.txt\"");
+    std::ifstream inFile("input.txt");
+    if (!inFile.is_open()) {
+        writeLog(logFile, "failed to open \"input.txt\"");
+        writeLog(logFile, "program has ended with code 1");
+        return 1;
+    }
+    writeLog(logFile, "file \"input.txt\" has been opened successfully");
+
+    writeLog(logFile, "opening file \"output.txt\"");
+    std::ofstream outFile("output.txt");
+    if (!outFile.is_open()) {
+        writeLog(logFile, "failed to open \"output.txt\"");
+        writeLog(logFile, "program has ended with code 1");
+        return 1;
+    }
+    writeLog(logFile, "file \"output.txt\" has been opened successfully");
+
+    writeLog(logFile, "reading lines from \"input.txt\"");
+    std::string line;
+    while (std::getline(inFile, line)) {
+        writeLog(logFile, "got line: \"" + line + "\"");
+        writeLog(logFile, "reversing words in line");
+        std::string res = reverseWords(line);
+        writeLog(logFile, "result: \"" + res + "\"");
+        writeLog(logFile, "writing result to \"output.txt\"");
+        outFile << res << "\n";
+    }
+
+    inFile.close();
+    outFile.close();
+    writeLog(logFile, "program has ended with code 0");
+    logFile.close();
+
+    return 0;
+}
